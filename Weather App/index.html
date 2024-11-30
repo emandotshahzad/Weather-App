@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>Weather App</h1>
+    <form onsubmit="getwaether(); return false;">
+        <label for="cityname">City Name</label>
+        <input type="text" id="temp1" placeholder="Enter city name" name="cityname" required>
+        <button type="submit">Submit</button>
+    </form>
+    <div id="result">
+
+    </div>
+    <script>
+        function getwaether(){
+            let pickcityName=document.getElementById("temp1").value;
+            axios.get(`https://api.weatherapi.com/v1/current.json?key=7cd9bd3f63e849a1a4b105523241711&q=${pickcityName}&aqi=yes`)
+              .then(function (response) {
+              // handle success
+                // console.log(response);
+                // document.body.innerHTML += `<p>Temperature: ${response.data.current.temp_c}°C</p>`;
+                let weatherData = `
+                    <h3>Weather in ${response.data.location.name}, ${response.data.location.region}</h3>
+                    <p>Temperature: ${response.data.current.temp_c}°C</p>
+                    <p>Condition: ${response.data.current.condition.text}</p>
+                    <p>Humidity: ${response.data.current.humidity}%</p>
+                    <p>Wind Speed: ${response.data.current.wind_kph} km/h</p>
+                    <p>Air Quality: ${response.data.current.air_quality.pm10} PM10, ${response.data.current.air_quality.pm2_5} PM2.5</p>
+                `;
+                
+               
+                document.body.innerHTML += weatherData;
+                
+
+
+                     })
+              .catch(function (error) {
+              // handle error
+                console.log(error);
+                     })
+            
+
+        }
+       
+
+
+    </script>
+</body>
+</html>
